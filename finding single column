@@ -1,0 +1,24 @@
+package realtime;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class TestCase2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		WebDriver driver = new ChromeDriver();
+		driver.get("http://www.amazon.com");
+		WebElement col = driver.findElement(By.xpath(".//*[@id='navFooter']/table/tbody/tr/td[3]"));
+		System.out.println("Links in a single column");
+		System.out.println(col.findElements(By.tagName("a")).size());
+		for (int i=0; i<col.findElements(By.tagName("a")).size();i++){
+			System.out.println(col.findElements(By.tagName("a")).get(i).getText());
+			
+		}
+	}
+
+}
