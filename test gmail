@@ -1,0 +1,66 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.LogStatus;
+
+
+public class TestGmail {
+	
+	
+	static final ExtentReports reports = ExtentReports.get(TestGmail.class);
+	static WebDriver driver;
+	@BeforeTest
+	public void setUp(){
+		
+		reports.init("c:\\reports\\report.html", true);
+	
+		driver = new FirefoxDriver();
+		
+		
+		
+	}
+	
+	@Test
+	public void validateTitle(){
+		
+		reports.startTest("Validate Title test");
+		driver.get("http://gmail.com");
+		reports.log(LogStatus.INFO, "Navigating to Gmail.com");
+		
+		
+		String actual_title = driver.getTitle();
+		reports.log(LogStatus.INFO, "validating titles");
+		Assert.assertEquals(actual_title, "Gmail");
+		reports.log(LogStatus.PASS, "Validate Title test Pass");
+		
+	}
+	
+	
+	@Test(dependsOnMethods="validateTitle")
+	public void doLogin(){
+		
+		reports.startTest("Validate Login test");
+		try{
+		Assert.fail();
+		}catch(Throwable t){
+		reports.log(LogStatus.FAIL, "Login Failed");
+		reports.attachScreenshot("c:\\screenshot\\error.jpg");
+		}
+	}
+	
+	
+	@AfterTest
+	public void tearDown(){
+		
+		driver.quit();
+		reports.endTest();
+		
+	}
+	
+
+}
