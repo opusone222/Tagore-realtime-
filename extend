@@ -1,0 +1,72 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.LogStatus;
+
+
+public class ExtendRepo {
+	
+	public static final ExtentReports report = ExtentReports.get(ExtendRepo.class);
+	public static WebDriver driver;
+	
+	@BeforeTest
+	public void init(){
+		
+		report.init("c:\\reports\\report.html", true);
+		driver = new FirefoxDriver();
+		
+	}
+	
+	
+	@Test
+	public void verifyTitle(){
+		
+		
+		report.startTest("Verify Title Test");
+		
+		report.log(LogStatus.INFO, "Firefox launched");
+		driver.get("http://gmail.com");
+		report.log(LogStatus.INFO, "navigated to Gmail.com");
+		String actual_title = driver.getTitle();
+		Assert.assertEquals(actual_title, "Gmail");
+		
+		report.log(LogStatus.PASS, "Title verified");
+		
+		report.attachScreenshot("c:\\screenshot\\error.jpg");
+		
+	
+		
+	}
+	
+	@Test(dependsOnMethods="verifyTitle")
+	public void verifyLogin(){
+		
+		report.startTest("Verify Login Test");
+		
+		
+		try{
+		Assert.fail();
+		}catch(Throwable t){
+			
+			report.log(LogStatus.FAIL, "Login Failed");
+			report.attachScreenshot("c:\\screenshot\\error.jpg");
+			
+			
+		}
+	}
+	
+	@AfterTest
+	public void tearDown(){
+		
+		
+		driver.quit();
+		
+		report.endTest();
+	}
+
+}
